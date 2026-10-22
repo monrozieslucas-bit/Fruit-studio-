@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b22">
+<title>FruitStudio — Tes histoires prennent vie</title>
+<style>
+:root{--bg:#100b22;--panel:#19132e;--panel2:#21193b;--text:#f8f5ff;--muted:#b8aecf;--pink:#ff5c9a;--orange:#ffb45c;--line:#392c56;--green:#8ef0bd}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 15% 0%,#35205d 0,transparent 38%),radial-gradient(ellipse at 100% 15%,#4b1745 0,transparent 28%),var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+.wrap{width:min(100% - 32px,980px);margin:0 auto;padding:22px 0 48px}
+nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:42px}
+.brand{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:850;letter-spacing:-.04em}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#ff5c9a,#ffb45c);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 28px #ff5c9a35}
+.pill{border:1px solid #4b3b68;border-radius:999px;padding:8px 12px;color:#ddd3f5;font-size:.78rem}
+.hero{text-align:center;max-width:720px;margin:0 auto 30px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#ffc1d9;background:#ff5c9a18;border:1px solid #ff5c9a44;border-radius:999px;padding:7px 12px;font-size:.8rem;font-weight:700}
+h1{font-size:clamp(2.25rem,8vw,4.6rem);line-height:1.02;letter-spacing:-.065em;margin:20px 0 14px}
+.gradient{background:linear-gradient(90deg,#ff7fb2,#ffc36c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:1.03rem;line-height:1.65;color:var(--muted);max-width:580px;margin:0 auto}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:stretch}
+.card{background:linear-gradient(160deg,#211936ed,#171128f5);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 18px 60px #0002}
+.card h2{font-size:1.05rem;margin:0 0 7px;letter-spacing:-.02em}
+.help{color:var(--muted);font-size:.88rem;line-height:1.5;margin:0 0 18px}
+label{display:block;font-size:.85rem;font-weight:750;margin:16px 0 8px}
+textarea,select{width:100%;border:1px solid #4b3b68;background:#100b22;color:var(--text);border-radius:14px;padding:14px;font:inherit;outline:none}
+textarea{min-height:172px;resize:vertical;line-height:1.55}
+textarea:focus,select:focus{border-color:#ff83b4;box-shadow:0 0 0 3px #ff5c9a1c}
+textarea::placeholder{color:#807494}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{width:100%;border:0;border-radius:14px;padding:14px 16px;background:linear-gradient(100deg,#ff5c9a,#ffb45c);color:#240e28;font-weight:850;font-size:1rem;cursor:pointer;margin-top:16px;box-shadow:0 10px 26px #ff5c9a22;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.99)}
+.samples{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.sample{background:#2b2143;border:1px solid #48365f;color:#e8def9;border-radius:999px;padding:8px 10px;font-size:.78rem;cursor:pointer}
+.sample:hover{border-color:#ff83b4}
+.preview{display:flex;flex-direction:column}
+.preview-screen{flex:1;min-height:280px;border-radius:18px;overflow:hidden;position:relative;background:radial-gradient(circle at 50% 38%,#6d2b76 0,#2a1946 34%,#100b22 74%);border:1px solid #49325f;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+.orbit{position:absolute;width:210px;height:210px;border:1px solid #ffb45c3b;border-radius:50%;animation:spin 18s linear infinite}
+.orbit:before,.orbit:after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:#ffb45c;box-shadow:0 0 20px #ffb45c;top:22px;left:26px}
+.orbit:after{background:#ff5c9a;box-shadow:0 0 20px #ff5c9a;top:auto;left:auto;bottom:8px;right:24px}
+.fruit{font-size:clamp(4rem,12vw,6rem);filter:drop-shadow(0 12px 24px #0005);z-index:1;animation:bob 3s ease-in-out infinite}
+.screen-copy{position:absolute;bottom:18px;left:18px;right:18px;color:#d8cde9;font-size:.78rem;z-index:2}
+.status{margin-top:14px;padding:12px 13px;border-radius:12px;background:#302342;border:1px solid #4b3a61;color:#e4d9f5;font-size:.83rem;line-height:1.5}
+.status strong{color:#fff}
+.status.warn{border-color:#7a5a35;background:#382a28;color:#ffe2b3}
+.status.ok{border-color:#28654b;background:#16372e;color:#c8ffe1}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.feature{border:1px solid var(--line);background:#171128b8;border-radius:17px;padding:15px}
+.feature .ico{font-size:1.35rem}.feature strong{display:block;margin:8px 0 4px;font-size:.9rem}.feature span{font-size:.78rem;line-height:1.45;color:var(--muted)}
+footer{text-align:center;color:#8f83a7;font-size:.78rem;line-height:1.6;margin-top:26px}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+@media(max-width:720px){.wrap{width:min(100% - 22px,560px);padding-top:14px}nav{margin-bottom:30px}.layout{grid-template-columns:1fr}.card{padding:17px}.preview-screen{min-height:260px}.features{grid-template-columns:1fr}.feature{display:flex;gap:12px;align-items:center}.feature .ico{font-size:1.7rem}.feature strong{margin:0 0 3px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <div class="brand"><div class="logo">🍓</div><span>FruitStudio</span></div>
+  <span class="pill">✦ Créateur d’histoires IA</span>
+</nav>
+<header class="hero">
+  <div class="eyebrow">🍌 Tes idées deviennent des aventures</div>
+  <h1>Imagine. Écris.<br><span class="gradient">Donne vie à ton histoire.</span></h1>
+  <p class="sub">Décris la vidéo que tu rêves de créer : un royaume de fruits, une fraise détective ou une banane super-héros. Ton aventure commence ici.</p>
+</header>
+<main class="layout">
+  <section class="card">
+    <h2>🎬 Imagine ta prochaine vidéo</h2>
+    <p class="help">Écris une description précise pour préparer ta création.</p>
+    <label for="prompt">Ton prompt</label>
+    <textarea id="prompt" maxlength="2000" placeholder="Ex. Une fraise détective découvre un coffre mystérieux dans un royaume de fruits..."></textarea>
+    <div class="samples" aria-label="Exemples de prompts">
+      <button class="sample" data-prompt="Une fraise détective découvre un coffre mystérieux dans un royaume magique rempli de fruits colorés. Suspense, expressions drôles, animation 3D cinématographique.">🍓 Fraise détective</button>
+      <button class="sample" data-prompt="Une banane super-héros vole au-dessus d'une ville de fruits pour sauver une petite pomme. Aventure épique, animation 3D colorée.">🍌 Banane héroïque</button>
+      <button class="sample" data-prompt="Un bonbon Krema devient le meilleur ami d'une pomme et d'une orange. Ensemble, ils découvrent un secret dans une forêt enchantée.">🍬 Secret Krema</button>
+    </div>
+    <div class="row">
+      <div><label for="format">Format vidéo</label><select id="format"><option value="9:16">Vertical (9:16)</option><option value="16:9">Paysage (16:9)</option><option value="1:1">Carré (1:1)</option></select></div>
+      <div><label for="duration">Durée souhaitée</label><select id="duration"><option value="5">5 secondes</option><option value="10" selected>10 secondes</option><option value="15">15 secondes</option><option value="60">1 minute (plusieurs clips)</option></select></div>
+    </div>
+    <button class="btn" id="generate">Préparer ma vidéo ✨</button>
+    <div id="status" class="status" role="status" aria-live="polite"><strong>Prêt à commencer.</strong> Choisis un exemple ou écris ton propre prompt.</div>
+  </section>
+  <section class="card preview">
+    <h2>🌈 Aperçu FruitStudio</h2>
+    <p class="help">Ta vidéo générée apparaîtra ici lorsque le moteur IA répondra.</p>
+    <div class="preview-screen">
+      <div class="orbit"></div>
+      <div class="fruit" id="fruit">🍓</div>
+      <div class="screen-copy" id="previewText">Ton prochain héros attend son histoire…</div>
+    </div>
+    <div id="engineStatus" class="status"><strong>État du moteur :</strong> connexion à configurer.<br>Le moteur vidéo utilise un service externe et son quota gratuit peut être très limité.</div>
+    <video id="resultVideo" controls playsinline style="display:none;width:100%;margin-top:14px;border-radius:14px;background:#080611"></video>
+  </section>
+</main>
+<section class="features">
+  <div class="feature"><div class="ico">✍️</div><div><strong>Ton imagination</strong><span>Écris des prompts jusqu’à 2 000 caractères.</span></div></div>
+  <div class="feature"><div class="ico">📱</div><div><strong>Conçu pour iPhone</strong><span>Une interface qui s’adapte aux petits écrans.</span></div></div>
+  <div class="feature"><div class="ico">🧩</div><div><strong>Prêt à évoluer</strong><span>Le site pourra recevoir un moteur vidéo compatible.</span></div></div>
+</section>
+<footer>FruitStudio — prototype gratuit. La génération vidéo réelle nécessite un moteur IA connecté, qui peut avoir des quotas ou des coûts.<br>Ne saisis aucune clé API secrète dans cette page.</footer>
+</div>
+<script>
+const promptBox=document.getElementById('prompt');
+const statusBox=document.getElementById('status');
+const previewText=document.getElementById('previewText');
+const fruit=document.getElementById('fruit');
+document.querySelectorAll('.sample').forEach(button=>button.addEventListener('click',()=>{
+  promptBox.value=button.dataset.prompt;
+  previewText.textContent=button.textContent.replace(/^[^ ]+ /,'')+' — prêt à être préparé';
+  fruit.textContent=button.textContent.includes('Banane')?'🍌':button.textContent.includes('Krema')?'🍬':'🍓';
+  statusBox.className='status';
+  statusBox.innerHTML='<strong>Prompt ajouté !</strong> Tu peux le modifier puis appuyer sur « Préparer ma vidéo ».';
+}));
+document.getElementById('generate').addEventListener('click', async ()=>{
+  const p=promptBox.value.trim();
+  if(!p){
+    statusBox.className='status warn';
+    statusBox.innerHTML='<strong>Ajoute une idée d’abord.</strong> Écris ton histoire ou choisis un exemple ci-dessus.';
+    promptBox.focus();return;
+  }
+  const format=document.getElementById('format').value;
+  const duration=Number(document.getElementById('duration').value);
+  previewText.textContent=p.length>100?p.slice(0,97)+'…':p;
+  const video=document.getElementById('resultVideo');
+  video.style.display='none';
+  statusBox.className='status';
+  statusBox.innerHTML='<strong>Préparation…</strong><br>FruitStudio essaie de contacter le serveur de génération.';
+  try {
+    const response = await fetch('/api/generate', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:p,format,duration})
+    });
+    if(!response.ok) {
+      let detail='Le serveur vidéo n’est pas configuré ou le quota du fournisseur est épuisé.';
+      try { const data=await response.json(); if(data.detail) detail=data.detail; } catch(e) {}
+      throw new Error(detail);
+    }
+    const blob=await response.blob();
+    if(!blob.type.startsWith('video/')) throw new Error('Le serveur n’a pas renvoyé de fichier vidéo.');
+    video.src=URL.createObjectURL(blob);
+    video.style.display='block';
+    await video.play().catch(()=>{});
+    statusBox.className='status ok';
+    statusBox.innerHTML='<strong>Vidéo reçue !</strong><br>Tu peux la lire ci-dessous. Selon le moteur, la durée réelle peut différer de celle demandée.';
+  } catch(err) {
+    statusBox.className='status warn';
+    statusBox.innerHTML='<strong>Génération indisponible.</strong><br>'+String(err.message).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))+'<br>Vérifie que le serveur est lancé et que sa clé API est configurée côté serveur. Aucun paiement ne sera déclenché par cette page seule.';
+  }
+});
+</script>
+</body>
+</html>
